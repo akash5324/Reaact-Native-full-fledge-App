@@ -1,10 +1,15 @@
 require('create-react-class');
 import React from 'react';
 import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, StatusBar, Colors,BackHandler } from 'react-native';
-import { Icon, Button, Container, Header, Body, Content,Left, Right} from 'native-base';
+import { Icon, Button, Container, Header, Body, Content,Left, Right,Title} from 'native-base';
 
 class Plans extends React.Component{
 
+  
+static navigationOptions={
+
+  header:null
+}
     constructor(props) {
     super(props)
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -25,10 +30,23 @@ handleBackButtonClick() {
 
 
     render(){
+       const { navigate } = this.props.navigation;
+
       return(
         <Container>
 
-       
+        <Header style={{backgroundColor:"green"}}>
+          <Left style={{flex:1}}>
+
+            <Button transparent onPress={()=>navigate('Dashboard')}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body  style={{flex:1,alignSelf:'center',justifyContent:'center'}}>
+            <Title>Track Weight</Title>
+          </Body>
+          <Right style={{flex:1}}/>
+        </Header>
 
           <Content>
             <View style={{flex:1, backgroundColor:'#ecefef'}}>

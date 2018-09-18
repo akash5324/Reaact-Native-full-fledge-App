@@ -1,18 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View,Button,TouchableOpacity,TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View,Button,TouchableOpacity,TouchableHighlight,AsyncStorage } from 'react-native';
 
-export default class App extends React.Component {
+export default class welcomeScreen extends React.Component {
 
-  action =()=>{
+   constructor() {
+    super();
+    this.state = {user_name:''};
+  }
 
+  componentDidMount(){
+
+        AsyncStorage.getItem('user_name').then((item) => {
+
+           this.setState({ user_name:item })
+ 
+    });
 
   }
-  render() {
+
+    render() {
+
+      const {navigate}=this.props.navigation;
     return (
       <View style={styles.container}>
         
         <View style={styles.mainSection}>
-            <Text style={{fontSize:30,color:'red',marginTop:'40%',marginBottom:'5%'}}>Hi Rishabh ,</Text>
+            <Text style={{fontSize:30,color:'red',marginTop:'40%',marginBottom:'5%'}}>Hi {this.state.user_name} ,</Text>
 
             <Text style={{fontSize:20,color:'#999',textAlign:'center'}}>Welcome, we can help you</Text> 
             <Text style={{fontSize:20,color:'#999',textAlign:'center'}}>to maintain your fitness and health</Text>
@@ -22,6 +35,7 @@ export default class App extends React.Component {
         <View style={styles.clickMe}>
 
         <TouchableOpacity
+        onPress={()=>navigate('Dash')}
         style={{
           width:300,
           height:50,
@@ -32,7 +46,7 @@ export default class App extends React.Component {
 
         }}
         >
-        <Text style={styles.MyTex}>Next</Text>
+        <Text style={styles.MyTex}>Continue</Text>
         </TouchableOpacity>
 
         </View>  

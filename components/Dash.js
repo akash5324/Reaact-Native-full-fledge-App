@@ -25,6 +25,7 @@ componentWillUnmount() {
 
 handleBackButtonClick() {
     this.props.navigation.goBack(null);
+    BackHandler.exitApp();
     return true;
 }
 

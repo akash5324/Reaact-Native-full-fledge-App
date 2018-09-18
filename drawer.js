@@ -18,7 +18,9 @@ import bfp from './components/bfp';
 import whr from './components/whr';
 import recipies from './components/recipies';
 import Profile from './components/profilepage';
-import meals from './components/meals'
+import meals from './components/meals';
+import blogs from './components/blogs';
+import myDiet from './components/mydiet.js';
 
 
 
@@ -89,7 +91,7 @@ const customDrawer = (props)=>(
 }
   },
   'My Diet': {
-    screen: recipies,
+    screen:myDiet,
                navigationOptions:{
 
         drawerIcon:(
@@ -119,7 +121,7 @@ const customDrawer = (props)=>(
   },
 
    'Blogs': {
-    screen: recipies,
+    screen: blogs,
                navigationOptions:{
 
         drawerIcon:(
@@ -180,7 +182,7 @@ const customDrawer = (props)=>(
   },
 
   Setting: {
-    screen: Plans,
+    screen: profilePage,
            navigationOptions:{
 
         drawerIcon:(

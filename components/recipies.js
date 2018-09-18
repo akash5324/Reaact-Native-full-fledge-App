@@ -29,6 +29,18 @@ handleBackButtonClick() {
         return(
             
             <View style={{flex:1, backgroundColor:'#ecefef'}}>
+             <Header style={{backgroundColor:"green"}}>
+          <Left style={{flex:1}}>
+
+            <Button transparent onPress={()=>navigate('Dashboard')}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body  style={{flex:1,alignSelf:'center',justifyContent:'center'}}>
+            <Title>Recipies</Title>
+          </Body>
+          <Right style={{flex:1}}/>
+        </Header>
                 <ScrollView>
                 <StatusBar hidden/>
                    <TouchableOpacity onPress={()=>navigate('recipies clicked')}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, Image, ImageBackground,BackHandler} from 'react-native';
+import {StyleSheet, Text, View, Button, Image, ImageBackground,BackHandler,Alert} from 'react-native';
 import { createDrawerNavigator, createStackNavigator, DrawerItems,createBottomTabNavigator } from 'react-navigation';
 import {Content, Container, Header, Body, Icon} from 'native-base';
 import Splash from './components/Splash.js';
@@ -23,9 +23,16 @@ import meals from './components/meals'
 import otpLogin from './components/otp-login'
 import fillDetails from './components/fill-details';
 import otpVerify from './components/otp-verify';
-
+import trackWeight from './components/track-weight';
+// import type { Notification, NotificationOpen } from 'react-native-firebase';
+// import firebase from 'react-native-firebase';
 import Navi from './drawer';
+import welcomeScreen from './components/welcomeScreen';
+import userSuccessLogin from './components/userSuccessLogin';
 
+
+//http://13.229.140.216/index.php/User/blog
+//http://erp.asksheela.com
 export class App extends React.Component {
 
   constructor(props) {
@@ -33,13 +40,15 @@ export class App extends React.Component {
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 }
 
+
+
+
 componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+       
+       BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+ 
 }
 
-componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-}
 
 handleBackButtonClick() {
     this.props.navigation.goBack(null);
@@ -86,16 +95,6 @@ const stack = createStackNavigator({
 
     screen:bmi
   },
-
-  bmr:{
-    screen:bmr
-  },
-  bfp:{
-    screen:bfp
-  },
-  whr:{
-    screen:whr
-  },
   diet:{
 
     screen:diet
@@ -124,8 +123,18 @@ const stack = createStackNavigator({
   fillDetails:{
 
     screen:fillDetails
-  }
+  },
+  'Track Weight':{
 
+    screen:trackWeight
+  },
+  welcomeScreen:{
+
+    screen:welcomeScreen
+  },
+  userSuccessLogin:{
+    screen:userSuccessLogin
+  }
 });
 
 

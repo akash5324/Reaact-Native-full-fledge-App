@@ -40,15 +40,17 @@ handleBackButtonClick() {
 
               <Text style={{textAlign: 'center', bottom:25, color:'#ffff', fontSize:30}}> Welcome </Text>
 
-              <TouchableOpacity
-              onPress={()=>navigate('otpLogin')}
-              style={styles.SubmitButtonStyle}
-              activeOpacity = { 0.5 }
+              {/*<TouchableOpacity
+                            onPress={()=>navigate('otpLogin')}
+                            style={styles.SubmitButtonStyle}
+                            activeOpacity = { 0.5 }
+              
+                            >
+                            <Text style={{color:'#020202',textAlign:'center'}}> Sign in with Mobile Number </Text>
+              
+                            </TouchableOpacity>}
 
-              >
-              <Text style={{color:'#020202',textAlign:'center'}}> Sign in with Mobile Number </Text>
-
-              </TouchableOpacity>
+                          */}
 
               <TouchableOpacity
               onPress={()=>navigate('emailLogin')}

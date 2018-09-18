@@ -1,7 +1,8 @@
 require('create-react-class');
 import React from 'react';
-import { StyleSheet, Platform, View, Text, Image,Alert, TouchableOpacity,TextInput, ImageBackground, ScrollView, StatusBar,  BackHandler } from 'react-native';
-import {Icon, Button, Container, Header, Body, Content,Left, Right, Footer,Picker,Thumbnail} from 'native-base';
+import { StyleSheet, Platform, View, Text, Image,Alert, TouchableOpacity,TextInput, ImageBackground, ScrollView, StatusBar,  BackHandler,AsyncStorage } from 'react-native';
+import {Icon, Button, Container, Header, Body, Content,Left, Right, Footer,Picker,Thumbnail,DatePicker} from 'native-base';
+
 
 
 export default class fillDetails extends React.Component{
@@ -9,16 +10,43 @@ export default class fillDetails extends React.Component{
      constructor(props) {
     super(props);
      this.state = {
-      selected2: undefined
+      name:'',
+      email:'',
+      phone:'',
+      password:'',
+      height:'',
+      weight:'',
+      address:'',
+      food:'',
+      medical:'',
+      clinic_id:3,
+      super_clinic:2,
+      dob:20
     };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 }
 
-  onValueChange2(value: string) {
-    this.setState({
-      selected2: value
+
+
+ 
+
+componentDidMount() {
+let keys=['name','email','phone','password']
+      AsyncStorage.multiGet(keys).then((result) => {
+
+           this.setState({ 
+            name:result[0][1],
+
+            email:result[1][1],
+
+            phone:result[2][1],
+
+            password:result[3][1]
+
+             })
+ 
     });
-  }
+}
 
 componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -32,6 +60,71 @@ handleBackButtonClick() {
     this.props.navigation.goBack(null);
     return true;
 }
+
+onSubmit= async () =>{
+
+  const {name,email,phone,password,height,weight,address,food,medical,clinic_id,super_clinic,dob}=this.state;
+
+if((name&&email&&phone&&password&&weight&&address&&food&&medical&&clinic_id&&super_clinic&&dob)!=='')
+
+{
+
+var params = {
+
+            name: this.state.name,
+            email: this.state.email,
+            password:this.state.password,
+            phone:this.state.phone,
+            height:this.state.height,
+            weight:this.state.weight,
+            address:this.state.address,
+            food:this.state.food,
+            medical:this.state.medical,
+            clinic_id:this.state.clinic_id,
+            super_clinic:this.state.super_clinic,
+            dob:this.state.dob,
+        };     
+        var formData = new FormData();
+
+        for (var k in params) {
+            formData.append(k, params[k]);
+        }
+
+        fetch('http://13.229.140.216/index.php/User/add_patient', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            body:formData
+      })
+          .then((response) => response.json())
+          .then((responseJson) => {
+           
+              if(responseJson['status'])
+              {
+
+                  Alert.alert('data saved');
+                 this.props.navigation.navigate('userSuccessLogin');  
+
+
+              }
+           
+            else
+            Alert.alert(responseJson['data']);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+
+}
+else{
+
+ Alert.alert('oopps !!',
+  "please fill all the fields");
+
+}
+    }
     
       render() {
 
@@ -46,65 +139,65 @@ handleBackButtonClick() {
                     </View>
                     <View style={{flex:1, marginTop:20, alignItems:'center'}}>
                         <TextInput
-                        placeholder='First Name'
+                        placeholder='Full Name'
                         placeholderTextColor='grey'
+                        value={this.state.name}
+                        editable={false} 
+                        selectTextOnFocus={false}
                         style={styles.textinput}/>
                         <TextInput
-                        placeholder='Last Name'
+                        placeholder='Email'
                         placeholderTextColor='grey'
-                        style={styles.textinput}/>
-                        <TextInput
-                        placeholder='Age'
-                        placeholderTextColor='grey'
+                        editable={false} 
+                        selectTextOnFocus={false}
+                        value={this.state.email}
                         style={styles.textinput}/>
 
                         <TextInput
-                        placeholder='weight'
+                        placeholder='phone'
                         placeholderTextColor='grey'
+                        editable={false} 
+                        selectTextOnFocus={false}
+                        value={this.state.phone}
                         style={styles.textinput}/>
 
                         <TextInput
                         placeholder='Height'
                         placeholderTextColor='grey'
+                        onChangeText={(height)=> this.setState({height})}
                         style={styles.textinput}/>
 
                         <TextInput
-                        placeholder='Alergies'
+                        placeholder='weight'
                         placeholderTextColor='grey'
-                        style={styles.textinput}/>
-
-
-                <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                style={{ width: undefined }}
-                placeholder="Select your SIM"
-                placeholderStyle={{ color: "#bfc6ea" }}
-                placeholderIconColor="#007aff"
-                selectedValue={this.state.selected2}
-                onValueChange={this.onValueChange2.bind(this)}
-              >
-                <Picker.Item label="Wallet" value="key0" />
-                <Picker.Item label="ATM Card" value="key1" />
-                <Picker.Item label="Debit Card" value="key2" />
-                <Picker.Item label="Credit Card" value="key3" />
-                <Picker.Item label="Net Banking" value="key4" />
-              </Picker>
-
-
-                        <TextInput
-                        placeholder='Email Id'
-                        placeholderTextColor='grey'
+                         onChangeText={(weight)=> this.setState({weight})}
                         style={styles.textinput}/>
 
                         <TextInput
-                        placeholder='Mobile Number'
+                        placeholder='Address'
                         placeholderTextColor='grey'
+                         onChangeText={(address)=> this.setState({address})}
                         style={styles.textinput}/>
+
+                        <TextInput
+                        placeholder='Food Preferences'
+                        placeholderTextColor='grey'
+                         onChangeText={(food)=> this.setState({food})}
+                        style={styles.textinput}/>
+
+                        <TextInput
+                        placeholder='Medical History'
+                        placeholderTextColor='grey'
+                         onChangeText={(medical)=> this.setState({medical})}
+                        style={styles.textinput}/>
+
+                      
+
 
                         <TouchableOpacity
                         style={styles.button}
                         activeOpacity={0.8}
+                        onPress={this.onSubmit}
                         >
                             <Text style={styles.buttonText}>Next</Text>
                         </TouchableOpacity>
