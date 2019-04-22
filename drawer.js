@@ -21,6 +21,8 @@ import Profile from './components/profilepage';
 import meals from './components/meals';
 import blogs from './components/blogs';
 import myDiet from './components/mydiet.js';
+import bookAppointment from './components/bookAppointment';
+
 
 
 
@@ -72,7 +74,7 @@ const customDrawer = (props)=>(
 
   'Book Your Appointment':{
 
-    screen:recipies,
+    screen:bookAppointment,
     navigationOptions:{
 
         drawerIcon:(

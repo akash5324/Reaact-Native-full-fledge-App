@@ -1,22 +1,64 @@
 import React, { Component } from 'react'; 
-import { Container, Header, Content, Card, CardItem, Text, Body,Input,Item,Left,Thumbnail,Right,List,ListItem,Icon } from 'native-base';
-import {ScrollView,FlatList,View,TextInput,StyleSheet,Image,TouchableOpacity,ImageBackground,BackHandler} from 'react-native';
-import CalendarStrip from 'react-native-calendar-strip';
-import moment from 'moment';
+import { Container, Header, Content, Card, CardItem, Text, Body,Input,Item,Left,Thumbnail,Right,List,ListItem,Icon,Button,Title } from 'native-base';
+import {ScrollView,FlatList,View,TextInput,StyleSheet,Image,TouchableOpacity,ImageBackground,BackHandler,AsyncStorage,Alert} from 'react-native';
+//import CalendarStrip from 'react-native-calendar-strip';
+//import moment from 'moment';
 
-  let datesWhitelist = [{
-      start: moment(),
-      end: moment().add(20, 'days')  // total 4 days enabled
-    }];
+ 
 
 export default class App extends Component { 
 
 
   constructor(props) {
     super(props)
+
+    this.state={
+
+      client_id:1,
+      data:[],
+      diet:[],
+      food:[]
+    }
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 }
 
+componentDidMount(){
+
+
+    //    AsyncStorage.getItem('clientId').then((item) => {
+
+    //        this.setState({client_id:item})
+ 
+    // });
+
+     fetch('http://13.229.140.216/index.php/User/get_my_meal?client_id='+this.state.client_id, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            }                       
+      })
+          .then((response) => response.json())
+          .then((responseJson) => {
+           
+              if(responseJson['status'])
+              {
+                this.setState({
+                
+                data:responseJson['my_diet'].meal
+
+                })    
+
+                 // Alert.alert(String(this.state.data[1].blog_id));
+              }
+            //this.saveItem('user_id',responseJson.user_id);
+             else
+             Alert.alert(responseJson['data']);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+}
 componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 }
@@ -30,297 +72,113 @@ handleBackButtonClick() {
     return true;
 }
 
+
      
   render() {
+
+        const {navigate}=this.props.navigation;
+        var {data,diet,food}=this.state;
+
+
+//          food=data.map(result =>{
+
+//         if((this.state.client_id)!==''){
+
+//           for (var i = 0; i < result.length; i++) {
+              
+//               for(var j=0;j<result[i].foods.length;j++){
+
+
+//                     return(
+
+
+//             <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}} key={result[i].foods[j].food_id}>
+//             <Text style={styles.text}>
+//             <Text style={styles.dot}>.</Text>
+//             {result.foods[i].food_name}
+//             </Text>
+//           </View>
+//         )
+
+
+//               }
+//           }
+
+      
+// }
+// })
+        diet=data.map(result =>{
+             //var haha = data[i].foods[j].food_name;
+          if((this.state.client_id)!==''){
+
+          return(
+
+        <Card style={{height:200,marginTop:0}} key={result.meal_id}>
+        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
+       
+        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
+        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>{result.meal_name}</Text>
+        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>{result.meal_time}</Text>
+        </View>
+
+          <View style={{flex:1,flexDirection:'row',justifyContent:'center',justifyContent:'space-around'}}>
+
+          {
+            result.foods.map(fd =>
+
+
+          <View key={fd.food_id}>
+          <Text style={styles.text}>
+          <Text style={styles.dot}>.</Text>
+          {fd.food_name}
+          </Text>
+        </View>
+
+
+
+              )
+          }
+
+          </View>
+
+     
+        </ImageBackground>
+      </Card>
+
+        )
+
+            } 
+})
+
+
+
    return ( 
 
     <Container style={{backgroundColor:'#fff',flex:1}}>
-        <Header />
+           <Header style={{backgroundColor:"green"}}>
+          <Left style={{flex:1}}>
 
-<View style={{flex:2}}>
-  
-
-
-            
-              
-                                  <CalendarStrip
-                    calendarAnimation={{type: 'sequence', duration: 30}}
-                    daySelectionAnimation={{type: 'background', duration: 100,highlightColor:'#fff'}}
-                    style={{height: 100, paddingTop: 10, paddingBottom: 10}}
-                    calendarHeaderStyle={{color: '#000'}}
-                    calendarColor={'#FC8080'}
-                    dateNumberStyle={{color: '#000'}}
-                    dateNameStyle={{color: '#000'}}
-                    highlightDateNumberStyle={{color: '#000'}}
-                    highlightDateNameStyle={{color: '#000'}}
-                    disabledDateNameStyle={{color: 'grey'}}
-                    disabledDateNumberStyle={{color: 'grey'}}
-                    weekendDateNumberStyle={{color: '#000'}}
-                    weekendDateNameStyle={{color: '#000'}}
-                    datesWhitelist={datesWhitelist}
-                    iconContainer={{flex: 0.2}}
-                />
-
-            
-
-
-     </View>   
-
-{/* Date options */}
-
-
-
+            <Button transparent onPress={()=>navigate('Dash')}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body  style={{flex:1,alignSelf:'center',justifyContent:'center'}}>
+            <Title>My Diet</Title>
+          </Body>
+          <Right style={{flex:1}}/>
+        </Header>
 <View style={{flex:12,marginBottom:10}}>
 
     <ScrollView style={{paddingTop:20}}>
+
+    { diet }
+
+    </ScrollView>
+    </View>
+
+  </Container>  
   
-    <Card style={{height:200}}>
-      
-        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
-
-        <View style={{flex:1,alignSelf:'stretch',backgroundColor:'rgba(255,255,255,0.2)',paddingTop:20}}>
-        
-        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>BreakFast</Text>
-        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>08:00 AM</Text>
-        </View>
-
-
-        
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-          <Text style={styles.dot}>.</Text>
-          Milk
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Salad
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Butter
-          </Text>
-        </View>
-
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Bread
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Biscuit
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Rice
-          </Text>
-        </View>
-
-        </View>
-        </ImageBackground>
-      </Card>
-
-
-       <Card style={{height:200}}>
-      
-        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
-
-        <View style={{flex:1,alignSelf:'stretch',backgroundColor:'rgba(255,255,255,0.2)',paddingTop:20}}>
-        
-        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>BreakFast</Text>
-        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>08:00 AM</Text>
-        </View>
-
-
-        
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-          <Text style={styles.dot}>.</Text>
-          Milk
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Salad
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Butter
-          </Text>
-        </View>
-
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Bread
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Biscuit
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Rice
-          </Text>
-        </View>
-
-        </View>
-        </ImageBackground>
-      </Card>
-
-
-       <Card style={{height:200}}>
-      
-        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
-
-        <View style={{flex:1,alignSelf:'stretch',backgroundColor:'rgba(255,255,255,0.2)',paddingTop:20}}>
-        
-        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>BreakFast</Text>
-        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>08:00 AM</Text>
-        </View>
-
-
-        
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-          <Text style={styles.dot}>.</Text>
-          Milk
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Salad
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Butter
-          </Text>
-        </View>
-
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Bread
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Biscuit
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Rice
-          </Text>
-        </View>
-
-        </View>
-        </ImageBackground>
-      </Card>
-
-
-       <Card style={{height:200}}>
-      
-        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
-
-        <View style={{flex:1,alignSelf:'stretch',backgroundColor:'rgba(255,255,255,0.2)',paddingTop:20}}>
-        
-        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>BreakFast</Text>
-        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>08:00 AM</Text>
-        </View>
-
-
-        
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-          <Text style={styles.dot}>.</Text>
-          Milk
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Salad
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Butter
-          </Text>
-        </View>
-
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Bread
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Biscuit
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Rice
-          </Text>
-        </View>
-
-        </View>
-        </ImageBackground>
-      </Card>
-
-
-       <Card style={{height:200}}>
-      
-        <ImageBackground source={require('.././images/4.png')} style={{width: '100%', height: '100%'}}>
-
-        <View style={{flex:1,alignSelf:'stretch',backgroundColor:'rgba(255,255,255,0.2)',paddingTop:20}}>
-        
-        <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-        <Text style={{color:'#FC8080',fontWeight:'bold',fontSize:24}}>BreakFast</Text>
-        <Text style={{color:'#fff',fontWeight:'bold',fontSize:24}}>08:00 AM</Text>
-        </View>
-
-
-        
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-          <Text style={styles.dot}>.</Text>
-          Milk
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Salad
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Butter
-          </Text>
-        </View>
-
-        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Bread
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Biscuit
-          </Text>
-          <Text style={styles.text}>
-           <Text style={styles.dot}>.</Text>
-          Rice
-          </Text>
-        </View>
-
-        </View>
-        </ImageBackground>
-      </Card>
-
-
-       
-
-      </ScrollView>
-      </View> 
-      
-            </Container>
-
+   
          
     );
   }

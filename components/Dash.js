@@ -13,8 +13,44 @@ export default class Dash extends React.Component{
 constructor(props) {
     super(props)
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+    this.state={
+      testimonials:[],
+      clinic_id:2,
+      data:[]
+    }
+    
 }
 
+componentDidMount(){
+
+
+    fetch('http://13.229.140.216/index.php/User/testimonials?clinic_id='+this.state.clinic_id, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            }                       
+      })
+          .then((response) => response.json())
+          .then((responseJson) => {
+           
+              if(responseJson['status'])
+              {
+                this.setState({
+                
+                data:responseJson['data']
+
+                })    
+
+                 // Alert.alert(String(this.state.data[1].blog_id));
+              }
+            //this.saveItem('user_id',responseJson.user_id);
+            else
+            Alert.alert(responseJson['data']);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+}
 componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 }
@@ -40,6 +76,42 @@ handleBackButtonClick() {
   render(){
 
     const { navigate } = this.props.navigation;
+
+      var {data,testimonials}=this.state;
+
+        testimonials=data.map(result =>(
+
+         <View key={result.testimonial_id} 
+         style={{
+                     flex:1,
+                     flexDirection:'column',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                 }}>
+                    <View>
+                      <Image
+                      source = {{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg/220px-Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg'}}
+                      style={{height:85, width:85, borderRadius:50, marginTop:-20}}
+                      />
+                    </View>
+                    <View style={{
+                      marginTop:10
+                    }}>
+                      <Text>{result.user_name}</Text>
+                    </View>
+                    <View>
+                      <Text style={{color:'grey'}}>{result.user_position}</Text>
+                    </View>
+                    <View style={{width:'70%'}}>
+                      <Text style={{color:'grey', marginTop:20, textAlign:'center'}}>"The biggest advantage of HalthifyMe it helped meet my goals"</Text>
+                    </View>
+                  </View>
+
+
+
+        )
+)
+
  
 
     return(
@@ -446,56 +518,7 @@ handleBackButtonClick() {
                   <Text style={{fontSize:20, marginTop:10}}>Testimonials</Text>
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                  <View style={{
-                     flex:1,
-                     flexDirection:'column',
-                     justifyContent: 'center',
-                     alignItems: 'center',
-                 }}>
-                    <View>
-                      <Image
-                      source = {{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg/220px-Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg'}}
-                      style={{height:85, width:85, borderRadius:50, marginTop:-20}}
-                      />
-                    </View>
-                    <View style={{
-                      marginTop:10
-                    }}>
-                      <Text>Natalie</Text>
-                    </View>
-                    <View>
-                      <Text style={{color:'grey'}}>0kg lost in 0 months</Text>
-                    </View>
-                    <View style={{width:'70%'}}>
-                      <Text style={{color:'grey', marginTop:20, textAlign:'center'}}>"The biggest advantage of HalthifyMe it helped meet my goals"</Text>
-                    </View>
-                  </View>
-
-
-                    <View style={{
-                     flex:1,
-                     flexDirection:'column',
-                     justifyContent: 'center',
-                     alignItems: 'center',
-                 }}>
-                    <View>
-                      <Image
-                      source = {{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg/220px-Natalie_Portman_Cannes_2015_5_%28cropped%29.jpg'}}
-                      style={{height:85, width:85, borderRadius:50, marginTop:-20}}
-                      />
-                    </View>
-                    <View style={{
-                      marginTop:10
-                    }}>
-                      <Text>Natalie</Text>
-                    </View>
-                    <View>
-                      <Text style={{color:'grey'}}>0kg lost in 0 months</Text>
-                    </View>
-                    <View style={{width:'70%'}}>
-                      <Text style={{color:'grey', marginTop:20, textAlign:'center'}}>"The biggest advantage of HalthifyMe it helped meet my goals"</Text>
-                    </View>
-                  </View>
+                 {testimonials}
                 </ScrollView>
               </View>
                     

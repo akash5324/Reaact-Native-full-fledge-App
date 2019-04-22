@@ -4,6 +4,10 @@
         "source": "C:\\Users\\akash_yadav\\Desktop\\asksheelaupdated\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.55.4\\res\\xml\\preferences.xml"
     },
     {
+        "merged": "F:\\other user\\desktop\\asksheelaupdated\\android\\app\\build\\intermediates\\res\\merged\\debug\\xml\\preferences.xml",
+        "source": "F:\\other user\\desktop\\asksheelaupdated\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.55.4\\res\\xml\\preferences.xml"
+    },
+    {
         "merged": "C:\\Users\\akash_yadav\\Desktop\\AskSheela\\android\\app\\build\\intermediates\\res\\merged\\debug\\xml\\preferences.xml",
         "source": "C:\\Users\\akash_yadav\\Desktop\\AskSheela\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.55.4\\res\\xml\\preferences.xml"
     }

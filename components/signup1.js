@@ -18,7 +18,7 @@ export default class signup1 extends React.Component{
         phone:'',
         firstage:false,
         codeInput:'',
-        confirmResult:'',
+        confirmResult:''
         
     }
 

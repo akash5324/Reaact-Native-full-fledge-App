@@ -104,7 +104,9 @@ var params = {
               {
 
                   Alert.alert('data saved');
-                 this.props.navigation.navigate('userSuccessLogin');  
+                  AsyncStorage.setItem('clientId',responseJson['client'].client_id);
+                 this.props.navigation.navigate('userSuccessLogin');
+
 
 
               }

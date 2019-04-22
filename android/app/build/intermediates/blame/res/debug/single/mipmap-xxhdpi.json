@@ -1,5 +1,9 @@
 [
     {
+        "merged": "F:\\other user\\desktop\\asksheelaupdated\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "F:\\other user\\desktop\\asksheelaupdated\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
         "merged": "C:\\Users\\akash_yadav\\Desktop\\AskSheela\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
         "source": "C:\\Users\\akash_yadav\\Desktop\\AskSheela\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
